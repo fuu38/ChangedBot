@@ -1,7 +1,7 @@
 module.exports = function () {
     var cheerioCli = require('cheerio-httpcli');
     var fs = require('fs');
-    cheerioCli.fetch("https://www.toyota-ct.ac.jp/information/feed", {})
+    cheerioCli.fetch("https://frozen-mountain-60507.herokuapp.com/", {})
         .then(function (result) {
             var TitleList = new Array();
             var LinkList = new Array();

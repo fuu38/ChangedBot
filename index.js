@@ -9,7 +9,7 @@ var Twitter = new Twit({
     access_token_secret: app.get('options').token_secret
 })
 
-var cronTime = "0 * * * * *";
+var cronTime = "* * * * * *";
 
 new CronJob({
     cronTime: cronTime,
@@ -26,7 +26,7 @@ function tweet() {
     console.log(now, last);
     console.log(now.title, last.title);
     if (now.title !== last.title) {
-        var message = "新しい投稿がありました。\n" + now.title + "\n詳しくはこちら\n" + now.link;
+        var message = "これはテストサーバーを使用したテストの投稿です。新規投稿をお知らせするものではありません。\n\"新しい投稿がありました。\n" + now.title + "\n詳しくはこちら\"\n" + now.link;
         console.log(message)
         Twitter.post('statuses/update', { status: message }, function (err, data, response) {
             if (err) {
