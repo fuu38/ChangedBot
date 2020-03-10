@@ -9,7 +9,7 @@ var Twitter = new Twit({
     access_token_secret: app.get('options').token_secret
 })
 
-var cronTime = "0 * * * * *";
+var cronTime = "* * * * * *";
 
 new CronJob({
     cronTime: cronTime,
@@ -21,21 +21,22 @@ new CronJob({
 
 function tweet() {
     require('./DetectChanges.js')();
-    var now = JSON.parse(fs.readFileSync('./now.json','utf8'));
-    var last = JSON.parse(fs.readFileSync('./last.json','utf8'));
-    console.log(now, last);
-    console.log(now.title, last.title);
-    if (now.title !== last.title) {
-        var message = "新しい投稿がありました。\n" + now.title + "\n詳しくはこちら\n" + now.link;
-        console.log(message)
-        Twitter.post('statuses/update', { status: message }, function (err, data, response) {
-            if (err) {
-                console.log(err);
-            }
-        });
+    if(fs.existsSync()) {
+        var now = JSON.parse(fs.readFileSync('./now.json', 'utf8'));
+        var last = JSON.parse(fs.readFileSync('./last.json', 'utf8'));
+        console.log(now, last);
+        console.log(now.title, last.title);
+        if (now.title !== last.title) {
+            var message = "新しい投稿がありました。\n" + now.title + "\n詳しくはこちら\n" + now.link;
+            console.log(message)
+            Twitter.post('statuses/update', {status: message}, function (err, data, response) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        } else {
+            console.log("Nothing to tweet now.");
+        }
+        fs.writeFileSync('./last.json', JSON.stringify(now));
     }
-    else {
-        console.log("Nothing to tweet now.");
-    }
-    fs.writeFileSync('./last.json', JSON.stringify(now));
 }
