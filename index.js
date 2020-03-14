@@ -9,7 +9,7 @@ var Twitter = new Twit({
     access_token_secret: app.get('options').token_secret
 })
 
-var cronTime = "* * * * * *";
+var cronTime = "0 * * * * *";
 
 new CronJob({
     cronTime: cronTime,
