@@ -19,9 +19,20 @@ new CronJob({
     start: true
 });
 
+function isExist(path) {
+    let fs = require('fs');
+    try {
+        fs.statSync(path);
+        return true;
+    }
+    catch (error) {
+        if (error.code == "ENOENT")
+            return false;
+    }
+}
 function tweet() {
     require('./DetectChanges.js')();
-    if(fs.existsSync()) {
+    if(isExist('./last.json')) {
         var now = JSON.parse(fs.readFileSync('./now.json', 'utf8'));
         var last = JSON.parse(fs.readFileSync('./last.json', 'utf8'));
         console.log(now, last);
