@@ -38,7 +38,7 @@ function tweet() {
         console.log(now, last);
         console.log(now.title, last.title);
         if (now.title !== last.title) {
-            var message = "新しい投稿がありました。\n" + now.title + "\n詳しくはこちら\n" + now.link;
+            var message = "「 "+now.title + " 」\n詳しくはこちら\n" + now.link;
             console.log(message)
             Twitter.post('statuses/update', {status: message}, function (err, data, response) {
                 if (err) {
