@@ -22,8 +22,6 @@ new CronJob({
     },
     start: true
 });
-
-const fs = require('fs');
 server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     res.sendStatus(200);
     console.log(req.body);
