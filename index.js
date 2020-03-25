@@ -15,7 +15,7 @@ const line_config = {
     channelAccessToken: process.env.LINE_ACCESS_TOKEN,
     channelSecret: process.env.LINE_SECRET_KEY
 };
-const LINE = new line.Client({line_config});
+const LINE = new line.Client(line_config);
 const cronTime = "0 * * * * *";
 
 new CronJob({
