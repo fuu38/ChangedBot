@@ -2,7 +2,7 @@ function send(Twitter, LINE) {
     const fs = require('fs');
     const csv = require('csv');
     require('./DetectChanges.js')();
-    if (isExist('./last.json')) {
+    if (fs.existsSync('./last.json')) {
         var now = JSON.parse(fs.readFileSync('./now.json', 'utf8'));
         var last = JSON.parse(fs.readFileSync('./last.json', 'utf8'));
         console.log(now, last);
