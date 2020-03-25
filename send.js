@@ -10,12 +10,12 @@ function send(Twitter, LINE) {
         if (now.title !== last.title) {
             //まずTwitterに投稿
             var message = "「 " + now.title + " 」\n詳しくはこちら\n" + now.link;
-            console.log(message)
             Twitter.post('statuses/update', { status: message }, function (err, data, response) {
                 if (err) {
                     console.log(err);
                 }
             });
+            console.log(message)
             const options = {
                 type: 'text',
                 text: message
@@ -30,7 +30,7 @@ function send(Twitter, LINE) {
                     });
             })
         } else {
-            console.log("Nothing to tweet now.");
+            console.log("Nothing to send now.");
         }
         fs.writeFileSync('./last.json', JSON.stringify(now));
     }
