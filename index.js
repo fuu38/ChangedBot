@@ -17,7 +17,6 @@ const line_config = {
     channelSecret: process.env.LINE_SECRET_KEY
 };
 const LINE = new line.Client(line_config);
-const LINE = new line.Client(line_config);
 if (require.main === module) {
     const message = "アップデート/再起動がされました。お手数ですが、一度グループからBotを退会させ、もう一度招待してください。";
     LINE.broadcast(message)
