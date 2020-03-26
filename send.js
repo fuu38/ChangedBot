@@ -6,6 +6,7 @@ module.exports = function () {
         channelAccessToken: process.env.LINE_ACCESS_TOKEN,
         channelSecret: process.env.LINE_SECRET_KEY
     };
+    const Twit = require('twit');
     const LINE = new line.Client(line_config);
     const Twitter = new Twit({
         consumer_key: app.get('options').key,
