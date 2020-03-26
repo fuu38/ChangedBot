@@ -1,6 +1,7 @@
 module.exports = function () {
     const fs = require('fs');
     const csv = require('csv');
+    const app = require('./app.js');
     const line = require('@line/bot-sdk');
     const line_config = {
         channelAccessToken: process.env.LINE_ACCESS_TOKEN,
