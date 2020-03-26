@@ -19,7 +19,7 @@ module.exports = function () {
                 link: LinkList[0]
             }
             fs.writeFileSync('./now.json', JSON.stringify(json));
-            if(!fs.existsSync('./last.json')){
+            if (!fs.existsSync('./last.json')) {
                 fs.writeFileSync('./last.json', JSON.stringify(json));
             }
         })
