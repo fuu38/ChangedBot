@@ -16,36 +16,38 @@ module.exports = function () {
         access_token_secret: app.get('options').token_secret
     });
     require('./DetectChanges.js')();
-    var now = JSON.parse(fs.readFileSync('./now.json', 'utf8'));
-    var last = JSON.parse(fs.readFileSync('./last.json', 'utf8'));
-    console.log(now, last);
-    console.log(now.title, last.title);
-    if (now.title !== last.title) {
-        //まずTwitterに投稿
-        var message = "「 " + now.title + " 」\n詳しくはこちら\n" + now.link;
-        Twitter.post('statuses/update', { status: message }, function (err, data, response) {
-            if (err) {
-                console.log(err);
-            }
-        });
-        console.log(message)
-        const options = {
-            type: 'text',
-            text: message
-        };
-        if (fs.existsSync('./groups.csv')) {
-            const groups = fs.readFileSync('./groups.csv').pipe(csv.parse());
-            groups.forEach((id) => {
-                client.pushMessage(id, options)
-                    .then(() => {
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
+    if (fs.existsSync('./now.json')) {
+        var now = JSON.parse(fs.readFileSync('./now.json', 'utf8'));
+        var last = JSON.parse(fs.readFileSync('./last.json', 'utf8'));
+        console.log(now, last);
+        console.log(now.title, last.title);
+        if (now.title !== last.title) {
+            //まずTwitterに投稿
+            var message = "「 " + now.title + " 」\n詳しくはこちら\n" + now.link;
+            Twitter.post('statuses/update', { status: message }, function (err, data, response) {
+                if (err) {
+                    console.log(err);
+                }
             });
+            console.log(message)
+            const options = {
+                type: 'text',
+                text: message
+            };
+            if (fs.existsSync('./groups.csv')) {
+                const groups = fs.readFileSync('./groups.csv').pipe(csv.parse());
+                groups.forEach((id) => {
+                    client.pushMessage(id, options)
+                        .then(() => {
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                });
+            }
+        } else {
+            console.log("Nothing to send now.");
         }
-    } else {
-        console.log("Nothing to send now.");
+        fs.writeFileSync('./last.json', JSON.stringify(now));
     }
-    fs.writeFileSync('./last.json', JSON.stringify(now));
 }
