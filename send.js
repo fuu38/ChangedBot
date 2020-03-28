@@ -1,14 +1,13 @@
 function send(Twitter) {
     const fs = require('fs');
-    var { Client } = require('pg');
-    var client = new Client({
+    const pg = require('pg');
+    const pool = new pg.Pool({
         host: process.env.PSQL_HOST,
         database: process.env.PSQL_DATABASE,
         user: process.env.PSQL_USER,
         port: 5432,
         password: process.env.PSQL_PASSWORD,
     })
-        client.connect();
     const line = require('@line/bot-sdk');
     const line_config = {
         channelAccessToken: process.env.LINE_ACCESS_TOKEN,
@@ -36,14 +35,16 @@ function send(Twitter) {
                 text: message
             };
             var groups;
-            client.query('SELECT GroupID FROM groups', (err, result) => {
+            pool.query('SELECT GroupID FROM groups', (err, result) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
                     groups = result.rows;
                 }
-            });
+            }).then(() => {
+                pool.end();
+            })
             console.log(groups);
             groups.forEach((id) => {
                 console.log(id.groupid);
@@ -59,7 +60,6 @@ function send(Twitter) {
         }
         fs.writeFileSync('./last.json', JSON.stringify(now));
     }
-    client.end();
 }
 
 module.exports = {

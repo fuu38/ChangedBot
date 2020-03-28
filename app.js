@@ -1,8 +1,8 @@
 var express = require('express');
 var app = express();
 const fs = require('fs');
-var { Client } = require('pg');
-var client = new Client({
+const pg = require('pg');
+const pool = new pg.Pool({
     host: process.env.PSQL_HOST,
     database: process.env.PSQL_DATABASE,
     user: process.env.PSQL_USER,
@@ -29,7 +29,6 @@ app.get('/', function (request, response) {
     response.send('Twitter Bot is Running!');
 })
 app.post('/webhook', line.middleware(line_config), (req, res, next) => {
-    client.connect();
     const crypto = require('crypto');
     const channelSecret = process.env.LINE_SECRET_KEY; // Channel secret string
     const body = req.body; // Request body string
@@ -46,18 +45,19 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
                 const source = event.source;
                 const groupId = source.groupId;
                 console.log("This bot joined :" + groupId);
-                client.query(`INSERT INTO groups (GroupID) VALUES ('${groupId}');`, (err, result) => {
+                pool.query(`INSERT INTO groups (GroupID) VALUES ('${groupId}');`, (err, result) => {
                     if (err) {
                         console.log(err);
                     }
-                });
+                }).then(() => {
+                    pool.end();
+                })
             }
         });
     }
     else {
         console.log("Validation Failed");
     }
-    client.end();
 });
 app.listen(app.get('port'), function () {
     console.log('Node app is Running at localhost:' + app.get('port'))
