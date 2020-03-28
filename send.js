@@ -35,7 +35,7 @@ function send(Twitter) {
                 text: message
             };
             var groups;
-            pool.query('SELECT GroupID FROM groups').then((err, result) => {
+            pool.query('SELECT DISTINCT GroupID FROM groups').then((err, result) => {
                 if (err) {
                     console.log(err);
                 }
