@@ -1,6 +1,15 @@
 var express = require('express');
 var app = express();
 const fs = require('fs');
+var { Client } = require('pg');
+var client = new Client({
+    host: process.env.PSQL_HOST,
+    database: process.env.PSQL_DATABASE,
+    user: process.env.PSQL_USER,
+    port: 5432,
+    password: process.env.PSQL_PASSWORD,
+})
+client.connect();
 const line = require('@line/bot-sdk');
 const line_config = {
     channelAccessToken: process.env.LINE_ACCESS_TOKEN,
@@ -37,12 +46,11 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
                 const source = event.source;
                 const groupId = source.groupId;
                 console.log("This bot joined :" + groupId);
-                if (!fs.existsSync('./groups.csv')) {
-                    fs.writeFileSync('./groups.csv', groupId + "\n");
-                }
-                else {
-                    fs.appendFileSync('./groups.csv', groupId + "\n");
-                }
+                client.query(`INSERT INTO groups (GroupID) VALUES (${groupId});`, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
             }
         });
     }
