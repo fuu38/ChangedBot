@@ -1,5 +1,14 @@
 function send(Twitter) {
     const fs = require('fs');
+    var { Client } = require('pg');
+    var client = new Client({
+        host: process.env.PSQL_HOST,
+        database: process.env.PSQL_DATABASE,
+        user: process.env.PSQL_USER,
+        port: 5432,
+        password: process.env.PSQL_PASSWORD,
+    })
+    client.connect();
     const line = require('@line/bot-sdk');
     const line_config = {
         channelAccessToken: process.env.LINE_ACCESS_TOKEN,
@@ -26,19 +35,25 @@ function send(Twitter) {
                 type: 'text',
                 text: message
             };
-            if (fs.existsSync('./groups.csv')) {
-                const groups = csvParser(fs.readFileSync('./groups.csv'));
-                console.log(groups);
-                groups.forEach((id) => {
-                    console.log(id[0]);
-                    LINE.pushMessage(id[0], options)
-                        .then(() => {
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                });
-            }
+            var groups;
+            client.query('SELECT GroupID FROM groups', (err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    groups = result.rows;
+                }
+            });
+            console.log(groups);
+            groups.forEach((id) => {
+                console.log(id.groupid);
+                LINE.pushMessage(id.groupid, options)
+                    .then(() => {
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            });
         } else {
             console.log("Nothing to send now.");
         }
