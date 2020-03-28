@@ -8,7 +8,7 @@ function send(Twitter) {
         port: 5432,
         password: process.env.PSQL_PASSWORD,
     })
-    client.connect();
+        client.connect();
     const line = require('@line/bot-sdk');
     const line_config = {
         channelAccessToken: process.env.LINE_ACCESS_TOKEN,
@@ -59,6 +59,7 @@ function send(Twitter) {
         }
         fs.writeFileSync('./last.json', JSON.stringify(now));
     }
+    client.end();
 }
 
 module.exports = {

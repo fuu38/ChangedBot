@@ -9,7 +9,6 @@ var client = new Client({
     port: 5432,
     password: process.env.PSQL_PASSWORD,
 })
-client.connect();
 const line = require('@line/bot-sdk');
 const line_config = {
     channelAccessToken: process.env.LINE_ACCESS_TOKEN,
@@ -30,6 +29,7 @@ app.get('/', function (request, response) {
     response.send('Twitter Bot is Running!');
 })
 app.post('/webhook', line.middleware(line_config), (req, res, next) => {
+    client.connect();
     const crypto = require('crypto');
     const channelSecret = process.env.LINE_SECRET_KEY; // Channel secret string
     const body = req.body; // Request body string
@@ -57,6 +57,7 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
     else {
         console.log("Validation Failed");
     }
+    client.end();
 });
 app.listen(app.get('port'), function () {
     console.log('Node app is Running at localhost:' + app.get('port'))
