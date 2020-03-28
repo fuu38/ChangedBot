@@ -43,7 +43,7 @@ function send(Twitter) {
                     groups = result.rows;
                 }
             }).then(() => {
-                pool.end();
+                
             });
             console.log(groups);
             groups.forEach((id) => {
