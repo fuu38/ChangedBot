@@ -46,7 +46,7 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
                 const source = event.source;
                 const groupId = source.groupId;
                 console.log("This bot joined :" + groupId);
-                client.query(`INSERT INTO groups (GroupID) VALUES (${groupId});`, (err, result) => {
+                client.query(`INSERT INTO groups (GroupID) VALUES ('${groupId}');`, (err, result) => {
                     if (err) {
                         console.log(err);
                     }
