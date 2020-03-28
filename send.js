@@ -35,7 +35,7 @@ function send(Twitter) {
                 text: message
             };
             var groups;
-            pool.query('SELECT GroupID FROM groups', (err, result) => {
+            pool.query('SELECT GroupID FROM groups').then((err, result) => {
                 if (err) {
                     console.log(err);
                 }
@@ -44,7 +44,7 @@ function send(Twitter) {
                 }
             }).then(() => {
                 pool.end();
-            })
+            });
             console.log(groups);
             groups.forEach((id) => {
                 console.log(id.groupid);
