@@ -19,8 +19,6 @@ function send(Twitter) {
     if (fs.existsSync('./last.json')) {
         var now = JSON.parse(fs.readFileSync('./now.json', 'utf8'));
         var last = JSON.parse(fs.readFileSync('./last.json', 'utf8'));
-        console.log(now, last);
-        console.log(now.title, last.title);
         if (now.title !== last.title) {
             //まずTwitterに投稿
             var message = "「 " + now.title + " 」\n詳しくはこちら\n" + now.link;
