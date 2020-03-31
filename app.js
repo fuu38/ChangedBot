@@ -38,7 +38,6 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
     if (req.headers['x-line-signature'] === signature) {
         console.log("Validation Succed");
         res.sendStatus(200);
-        console.log(req.body);
         req.body.events.forEach((event) => {
             // 参加イベント発生時にグループIDを記録
             if (event.type == "join") {
