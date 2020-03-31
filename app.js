@@ -52,6 +52,13 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
                 }).then(() => {
                 });
             }
+            else if (event.type == "message") {
+                const obj = event.message;
+                console.log("new message:" + obj.text);
+            }
+            else {
+                console.log("some event happend,but unnecessary");
+            }
         });
     }
     else {
