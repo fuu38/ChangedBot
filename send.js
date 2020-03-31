@@ -44,7 +44,7 @@ function send(Twitter) {
                 //LINE送信開始
                 console.log(groups);
                 try {
-                    groups.forEach((id) => {
+                    groups[0].forEach((id) => {
                         console.log(id.groupid);
                         LINE.pushMessage(id.groupid, options)
                             .then(() => {
