@@ -38,13 +38,13 @@ function send(Twitter) {
                     console.log(err);
                 }
                 else {
-                    groups = result.rows;
+                    groups = result;
                 }
             }).then(() => {
                 //LINE送信開始
                 console.log(groups);
                 try {
-                    groups[0].forEach((id) => {
+                    groups.forEach((id) => {
                         console.log(id.groupid);
                         LINE.pushMessage(id.groupid, options)
                             .then(() => {
