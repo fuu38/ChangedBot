@@ -42,17 +42,19 @@ function send(Twitter) {
                 }
             }).then(() => {
                 
-            });
-            console.log(groups);
-            groups.forEach((id) => {
-                console.log(id.groupid);
-                LINE.pushMessage(id.groupid, options)
-                    .then(() => {
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            });
+            }).then(() => {
+                //LINE送信開始
+                console.log(groups);
+                groups[0].forEach((id) => {
+                    console.log(id.groupid);
+                    LINE.pushMessage(id.groupid, options)
+                        .then(() => {
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                }); 
+            })
         } else {
             console.log("Nothing to send now.");
         }
