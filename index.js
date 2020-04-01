@@ -36,7 +36,7 @@ pool.query('SELECT DISTINCT GroupID FROM groups').then((err, result) => {
 }).then((result) => {
     try {
         console.log(result);
-        console.log(result.rows);
+        console.log(result.Result.rows);
     }
     catch (err) {
         console.log(err);

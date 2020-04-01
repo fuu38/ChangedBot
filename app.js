@@ -8,7 +8,7 @@ const pool = new pg.Pool({
     user: process.env.PSQL_USER,
     port: 5432,
     password: process.env.PSQL_PASSWORD,
-})
+});
 const line = require('@line/bot-sdk');
 const line_config = {
     channelAccessToken: process.env.LINE_ACCESS_TOKEN,
