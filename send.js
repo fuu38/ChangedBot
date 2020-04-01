@@ -32,31 +32,24 @@ function send(Twitter) {
                 type: 'text',
                 text: message
             };
-            pool.query('SELECT DISTINCT GroupID FROM groups').then((err, result) => {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    return result;
-                }
-            }).then((result) => {
-                //LINE送信開始
-                console.log(result);
-                try {
-                    result.rows.map(r => r.groupid).forEach(groupid => {
-                        console.log(groupid);
-                        LINE.pushMessage(groupid, options)
-                            .then(() => {
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                            });
-                    });
-                }
-                catch (err) {
-                    console.log(err);
-                }
-            })
+            const p_options = {
+                rowMode: 'array',
+                text: 'SELECT DISTINCT GroupID FROM groups'
+            }
+            pool.query(p_options).then((result) => {
+                //LINE送信はじめ
+                result.rows.map(r => r[0]).forEach(groupid =>{
+                    console.log(groupid);
+                    LINE.pushMessage(groupid, options)
+                        .then(() => {
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                });
+            }).catch(err => {
+                console.log(err);
+            });
         } else {
             console.log("Nothing to send now.");
         }

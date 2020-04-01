@@ -18,24 +18,7 @@ const line_config = {
 };
 const LINE = new line.Client(line_config);
 const cronTime = "0 * * * * *";
-const pg = require('pg');
-const pool = new pg.Pool({
-    host: process.env.PSQL_HOST,
-    database: process.env.PSQL_DATABASE,
-    user: process.env.PSQL_USER,
-    port: 5432,
-    password: process.env.PSQL_PASSWORD,
-});
-const options = {
-    rowMode: 'array',
-    text: 'SELECT DISTINCT GroupID FROM groups'
-}
-pool.query(options).then((result) => {
-    console.log(result);
-    console.log(result.rows);
-}).catch(err => {
-    console.log(err);
-});
+
 new CronJob({
     cronTime: cronTime,
     onTick: function () {
