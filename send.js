@@ -32,19 +32,18 @@ function send(Twitter) {
                 type: 'text',
                 text: message
             };
-            var groups;
             pool.query('SELECT DISTINCT GroupID FROM groups').then((err, result) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
-                    groups = result;
+                    return result;
                 }
-            }).then(() => {
+            }).then((result) => {
                 //LINE送信開始
-                console.log(groups);
+                console.log(result);
                 try {
-                    groups.rows.map(r => r.groupid).forEach(groupid => {
+                    result.rows.map(r => r.groupid).forEach(groupid => {
                         console.log(groupid);
                         LINE.pushMessage(groupid, options)
                             .then(() => {

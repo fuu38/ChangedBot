@@ -26,18 +26,21 @@ const pool = new pg.Pool({
     port: 5432,
     password: process.env.PSQL_PASSWORD,
 });
-var groups;
 pool.query('SELECT DISTINCT GroupID FROM groups').then((err, result) => {
     if (err) {
         console.log(err);
     }
     else {
-        groups = result;
+        return result;
     }
-}).then(() => {
-    //LINE送信開始
-    console.log(groups);
-    console.log(groups.rows);
+}).then((result) => {
+    try {
+        console.log(result);
+        console.log(result.rows);
+    }
+    catch (err) {
+        console.log(err);
+    }
 });
 new CronJob({
     cronTime: cronTime,
