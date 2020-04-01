@@ -18,7 +18,26 @@ const line_config = {
 };
 const LINE = new line.Client(line_config);
 const cronTime = "0 * * * * *";
-
+const pg = require('pg');
+const pool = new pg.Pool({
+    host: process.env.PSQL_HOST,
+    database: process.env.PSQL_DATABASE,
+    user: process.env.PSQL_USER,
+    port: 5432,
+    password: process.env.PSQL_PASSWORD,
+});
+pool.query('SELECT DISTINCT GroupID FROM groups').then((err, result) => {
+    if (err) {
+        console.log(err);
+    }
+    else {
+        groups = result;
+    }
+}).then(() => {
+    //LINE送信開始
+    console.log(groups);
+    console.log(groups.rows);
+});
 new CronJob({
     cronTime: cronTime,
     onTick: function () {
