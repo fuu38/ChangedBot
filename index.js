@@ -31,11 +31,11 @@ const options = {
     text: 'SELECT DISTINCT GroupID FROM groups'
 }
 pool.query(options).then((result) => {
-        console.log(result);
-        console.log(result.rows);
-}).catch(err){
+    console.log(result);
+    console.log(result.rows);
+}).catch(err => {
     console.log(err);
-}
+});
 new CronJob({
     cronTime: cronTime,
     onTick: function () {
