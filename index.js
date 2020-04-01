@@ -26,6 +26,7 @@ const pool = new pg.Pool({
     port: 5432,
     password: process.env.PSQL_PASSWORD,
 });
+var groups;
 pool.query('SELECT DISTINCT GroupID FROM groups').then((err, result) => {
     if (err) {
         console.log(err);
