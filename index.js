@@ -30,23 +30,12 @@ const options = {
     rowMode: 'array',
     text: 'SELECT DISTINCT GroupID FROM groups'
 }
-pool.query(options, (err, res) => {
-    if (err) {
-        console.log(err);
-    }
-    else {
-        return res;
-    }
-}
-).then((result) => {
-    try {
+pool.query(options).then((result) => {
         console.log(result);
         console.log(result.rows);
-    }
-    catch (err) {
-        console.log(err);
-    }
-});
+}).catch(err){
+    console.log(err);
+}
 new CronJob({
     cronTime: cronTime,
     onTick: function () {
