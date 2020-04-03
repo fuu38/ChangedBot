@@ -56,7 +56,7 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
                 console.log("new message:" + obj.text);
             }
             else {
-                console.log("some event happend,but unnecessary");
+                console.log("Trival event");
             }
         });
     }
@@ -65,6 +65,6 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
     }
 });
 app.listen(app.get('port'), function () {
-    console.log('Node app is Running at localhost:' + app.get('port'))
+    console.log('Node app is Running at:' + app.get('port'))
 })
 module.exports = app;
