@@ -50,8 +50,6 @@ function send(Twitter) {
             }).catch(err => {
                 console.log(err);
             });
-        } else {
-            console.log("Nothing to send now.");
         }
         fs.writeFileSync('./last.json', JSON.stringify(now));
     }
