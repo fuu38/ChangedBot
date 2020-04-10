@@ -14,7 +14,6 @@ function send(Twitter) {
         channelSecret: process.env.LINE_SECRET_KEY
     };
     const LINE = new line.Client(line_config);
-    const csvParser = require('csv-parse/lib/sync');
     require('./DetectChanges.js')();
     if (fs.existsSync('./last.json')) {
         var now = JSON.parse(fs.readFileSync('./now.json', 'utf8'));
