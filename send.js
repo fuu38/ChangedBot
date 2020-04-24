@@ -53,7 +53,14 @@ function send(Twitter) {
         fs.writeFileSync('./last.json', JSON.stringify(now));
     }
 }
-
+function daily(Twitter) {
+    var message ="朝です。各クラスで配布されている健康調査のアンケートフォームに回答してください。"
+    Twitter.post('statuses/update', { status: message }, function (err, data, response) {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
 module.exports = {
-    send
+    send,daily
 }

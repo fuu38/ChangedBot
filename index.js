@@ -23,3 +23,9 @@ new CronJob({
     },
     start: true
 });
+new CronJob({
+    cronTime: "0 0 10 * * *",
+    onTick: function () {
+        send.daily(Twitter)
+    }
+})
