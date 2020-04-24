@@ -1,9 +1,6 @@
 const app = require('./app.js');
 const Twit = require('twit');
 const CronJob = require('cron').CronJob;
-const fs = require('fs');
-const express = require('express');
-const server = express();
 const line = require('@line/bot-sdk');
 const send = require('./send.js');
 const Twitter = new Twit({
