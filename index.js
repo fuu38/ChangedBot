@@ -14,18 +14,21 @@ const line_config = {
     channelSecret: process.env.LINE_SECRET_KEY
 };
 const LINE = new line.Client(line_config);
-const cronTime = "0 * * * * *";
-
-new CronJob({
-    cronTime: cronTime,
+const scrapeTime = "0 * * * * *";
+const scrape = new CronJob({
+    cronTime: scrapeTime,
     onTick: function () {
         send.send(Twitter);
     },
     start: true
 });
-new CronJob({
-    cronTime: "0 0 10 * * *",
+const morningTime="0 0 10 * * *"
+const healthcheck = new CronJob({
+    cronTime:morningTime,
+    timeZone:"Japan/Tokyo",
     onTick: function () {
         send.daily(Twitter)
     }
 })
+scrape.start();
+healthcheck.start();
