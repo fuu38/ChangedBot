@@ -53,7 +53,15 @@ function send(Twitter) {
         fs.writeFileSync('./last.json', JSON.stringify(now));
     }
 }
-
+function daily(Twitter) {
+    var today = new Date();
+    const message = "本日は" + (today.getMonth() + 1) + "月" + today.getDate() + "日" + "9:00分です。各クラスで配布されている健康調査のアンケートフォームに回答してください。"
+    Twitter.post('statuses/update', { status: message }, function (err, data, response) {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
 module.exports = {
-    send
+    send,daily
 }
