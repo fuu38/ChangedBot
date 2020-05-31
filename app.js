@@ -51,12 +51,8 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
                 }).then(() => {
                 });
             }
-            else if (event.type == "message") {
-                const obj = event.message;
-                console.log("new message:" + obj.text);
-            }
             else {
-                console.log("Trival event");
+                console.log("認証には成功しましたが、無関係なイベントです");
             }
         });
     }
