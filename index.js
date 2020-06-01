@@ -22,12 +22,6 @@ const scrape = new CronJob({
     },
     start: true
 });
-const morningTime="0 0 9 * * *"
-const healthcheck = new CronJob({
-    cronTime:morningTime,
-    onTick: function () {
-        send.daily(Twitter)
-    }
-})
+
 scrape.start();
-healthcheck.start();
+
