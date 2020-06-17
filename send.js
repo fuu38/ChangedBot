@@ -25,7 +25,7 @@ function send(Twitter) {
         if (now.title !== last.title) {
             //まずTwitterに投稿
             var message = "「 " + now.title + " 」\n詳しくはこちら\n" + now.link;
-            Twitter.post('statuses/update', { status: message }, function (err, data, response) {
+            Twitter.post('statuses/update', { status: message }, function(err, data, response) {
                 if (err) {
                     console.log(err);
                 }
@@ -41,11 +41,10 @@ function send(Twitter) {
             }
             pool.query(p_options).then((result) => {
                 //LINE送信はじめ
-                result.rows.map(r => r[0]).forEach(groupid =>{
+                result.rows.map(r => r[0]).forEach(groupid => {
                     console.log(groupid);
                     LINE.pushMessage(groupid, options)
-                        .then(() => {
-                        })
+                        .then(() => {})
                         .catch((err) => {
                             console.log(err);
                         });
@@ -58,5 +57,5 @@ function send(Twitter) {
     }
 }
 module.exports = {
-    send,daily
+    send
 }
