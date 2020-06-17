@@ -25,7 +25,7 @@ app.set('options', options);
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', function (request, response) {
+app.get('/', function(request, response) {
     response.send('Twitter Bot is Running!');
 })
 app.post('/webhook', line.middleware(line_config), (req, res, next) => {
@@ -44,23 +44,18 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
                 const source = event.source;
                 const groupId = source.groupId;
                 console.log("This bot joined :" + groupId);
-                pool.query(`INSERT INTO groups (GroupID) VALUES ('${groupId}');`).then((err,result)=> {
+                pool.query(`INSERT INTO groups (GroupID) VALUES ('${groupId}');`).then((err, result) => {
                     if (err) {
                         console.log(err);
                     }
-                }).then(() => {
-                });
-            }
-            else {
-                console.log("認証には成功しましたが、無関係なイベントです");
+                }).then(() => {});
             }
         });
-    }
-    else {
+    } else {
         console.log("Validation Failed");
     }
 });
-app.listen(app.get('port'), function () {
+app.listen(app.get('port'), function() {
     console.log('Node app is Running at:' + app.get('port'))
 })
 module.exports = app;
