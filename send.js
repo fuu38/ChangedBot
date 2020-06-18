@@ -15,9 +15,9 @@ function send() {
     };
     const LINE = new line.Client(line_config);
     require('./DetectChanges.js')();
+    const now = JSON.parse(fs.readFileSync('./now.json', 'utf8'));
     if (fs.existsSync('./last.json')) {
-        var now = JSON.parse(fs.readFileSync('./now.json', 'utf8'));
-        var last = JSON.parse(fs.readFileSync('./last.json', 'utf8'));
+        const last = JSON.parse(fs.readFileSync('./last.json', 'utf8'));
         now.title.forEach(t => {
             console.log(t);
             if (!last.title.includes(t)) {
