@@ -12,14 +12,9 @@ module.exports = function() {
                     LinkList.push((result.$(element).text()));
                 })
                 //一番上はいらんので削除
-            TitleList.shift();
-            LinkList.shift();
-            //2020-6-17 しばらく一番上にある健康調査を飛ばす
-            TitleList.shift();
-            LinkList.shift();
             var json = {
-                title: TitleList[0],
-                link: LinkList[0]
+                title: TitleList,
+                link: LinkList
             }
             fs.writeFileSync('./now.json', JSON.stringify(json));
             if (!fs.existsSync('./last.json')) {
@@ -29,7 +24,4 @@ module.exports = function() {
         .catch(function(err) {
             console.log(err);
         })
-        .finally(function() {
-            return { title, link };
-        });
 }

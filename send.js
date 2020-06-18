@@ -18,43 +18,40 @@ function send(Twitter) {
     if (fs.existsSync('./last.json')) {
         var now = JSON.parse(fs.readFileSync('./now.json', 'utf8'));
         var last = JSON.parse(fs.readFileSync('./last.json', 'utf8'));
-        if (now.link === "https://www.toyota-ct.ac.jp/information/23786/") {
-            //毎回こいつを上に持ってくるのでこいつはスキップ
-            return
-        }
-        if (now.title !== last.title) {
-            //まずTwitterに投稿
-            var message = "「 " + now.title + " 」\n詳しくはこちら\n" + now.link;
-            Twitter.post('statuses/update', { status: message }, function(err, data, response) {
-                if (err) {
-                    console.log(err);
-                }
-            });
-            console.log(message)
-            const options = {
-                type: 'text',
-                text: message
-            };
-            const p_options = {
-                rowMode: 'array',
-                text: 'SELECT DISTINCT GroupID FROM groups'
-            }
-            pool.query(p_options).then((result) => {
-                //LINE送信はじめ
-                result.rows.map(r => r[0]).forEach(groupid => {
-                    console.log(groupid);
-                    LINE.pushMessage(groupid, options)
-                        .then(() => {})
-                        .catch((err) => {
-                            console.log(err);
-                        });
+        now.title.forEach(t => {
+            if (!last.title.includes(t)) {
+                var message = "「 " + t + " 」\n詳しくはこちら\n" + now.link[now.title.indexOf(t)];
+                Twitter.post('statuses/update', { status: message }, function(err, data, response) {
+                    if (err) {
+                        console.log(err);
+                    }
                 });
-            }).catch(err => {
-                console.log(err);
-            });
-        }
-        fs.writeFileSync('./last.json', JSON.stringify(now));
+                console.log(message);
+                const options = {
+                    type: 'text',
+                    text: message
+                };
+                const p_options = {
+                    rowMode: 'array',
+                    text: 'SELECT DISTINCT GroupID FROM groups'
+                }
+                pool.query(p_options).then((result) => {
+                    //LINE送信はじめ
+                    result.rows.map(r => r[0]).forEach(groupid => {
+                        console.log(groupid);
+                        LINE.pushMessage(groupid, options)
+                            .then(() => {})
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                    });
+                }).catch(err => {
+                    console.log(err);
+                });
+            }
+        });
     }
+    fs.writeFileSync('./last.json', JSON.stringify(now));
 }
 module.exports = {
     send
