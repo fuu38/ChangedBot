@@ -1,4 +1,4 @@
-function send(Twitter) {
+function send = {
     const fs = require('fs');
     const pg = require('pg');
     const pool = new pg.Pool({
@@ -19,8 +19,10 @@ function send(Twitter) {
         var now = JSON.parse(fs.readFileSync('./now.json', 'utf8'));
         var last = JSON.parse(fs.readFileSync('./last.json', 'utf8'));
         now.title.forEach(t => {
+            console.log(t);
             if (!last.title.includes(t)) {
                 var message = "「 " + t + " 」\n詳しくはこちら\n" + now.link[now.title.indexOf(t)];
+
                 Twitter.post('statuses/update', { status: message }, function(err, data, response) {
                     if (err) {
                         console.log(err);
@@ -53,6 +55,4 @@ function send(Twitter) {
     }
     fs.writeFileSync('./last.json', JSON.stringify(now));
 }
-module.exports = {
-    send
-}
+module.exports(send);
