@@ -55,4 +55,4 @@ function send() {
     }
     fs.writeFileSync('./last.json', JSON.stringify(now));
 }
-module.exports(send);
+module.exports = { send };
