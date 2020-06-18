@@ -1,4 +1,4 @@
-function send() {
+function send = {
     const fs = require('fs');
     const pg = require('pg');
     const pool = new pg.Pool({
