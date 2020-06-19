@@ -14,18 +14,18 @@ function send() {
         channelSecret: process.env.LINE_SECRET_KEY
     };
     const LINE = new line.Client(line_config);
-    var now;
 
     function work() {
         require('./DetectChanges.js')();
         return Promise.resolve();
     }
 
+    var now;
+
     work().then(() => { now = JSON.parse(fs.readFileSync('./now.json', 'utf8')); }).then(() => {
         if (fs.existsSync('./last.json')) {
             const last = JSON.parse(fs.readFileSync('./last.json', 'utf8'));
             now.title.forEach(t => {
-                console.log(t);
                 if (!last.title.includes(t)) {
                     var message = "「 " + t + " 」\n詳しくはこちら\n" + now.link[now.title.indexOf(t)];
 
