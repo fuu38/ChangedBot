@@ -14,46 +14,52 @@ function send() {
         channelSecret: process.env.LINE_SECRET_KEY
     };
     const LINE = new line.Client(line_config);
-    const now = require('./DetectChanges.js')()
-        .then(JSON.parse(fs.readFileSync('./now.json', 'utf8'))).then(() => {
-            if (fs.existsSync('./last.json')) {
-                const last = JSON.parse(fs.readFileSync('./last.json', 'utf8'));
-                now.title.forEach(t => {
-                    console.log(t);
-                    if (!last.title.includes(t)) {
-                        var message = "「 " + t + " 」\n詳しくはこちら\n" + now.link[now.title.indexOf(t)];
+    var now;
 
-                        Twitter.post('statuses/update', { status: message }, function(err, data, response) {
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
-                        console.log(message);
-                        const options = {
-                            type: 'text',
-                            text: message
-                        };
-                        const p_options = {
-                            rowMode: 'array',
-                            text: 'SELECT DISTINCT GroupID FROM groups'
-                        }
-                        pool.query(p_options).then((result) => {
-                            //LINE送信はじめ
-                            result.rows.map(r => r[0]).forEach(groupid => {
-                                console.log(groupid);
-                                LINE.pushMessage(groupid, options)
-                                    .then(() => {})
-                                    .catch((err) => {
-                                        console.log(err);
-                                    });
-                            });
-                        }).catch(err => {
+    function work() {
+        require('./DetectChanges.js')();
+        return Promise.resolve();
+    }
+
+    work().then(() => { now = JSON.parse(fs.readFileSync('./now.json', 'utf8')); }).then(() => {
+        if (fs.existsSync('./last.json')) {
+            const last = JSON.parse(fs.readFileSync('./last.json', 'utf8'));
+            now.title.forEach(t => {
+                console.log(t);
+                if (!last.title.includes(t)) {
+                    var message = "「 " + t + " 」\n詳しくはこちら\n" + now.link[now.title.indexOf(t)];
+
+                    Twitter.post('statuses/update', { status: message }, function(err, data, response) {
+                        if (err) {
                             console.log(err);
-                        });
+                        }
+                    });
+                    console.log(message);
+                    const options = {
+                        type: 'text',
+                        text: message
+                    };
+                    const p_options = {
+                        rowMode: 'array',
+                        text: 'SELECT DISTINCT GroupID FROM groups'
                     }
-                });
-            }
-            fs.writeFileSync('./last.json', JSON.stringify(now));
-        });
+                    pool.query(p_options).then((result) => {
+                        //LINE送信はじめ
+                        result.rows.map(r => r[0]).forEach(groupid => {
+                            console.log(groupid);
+                            LINE.pushMessage(groupid, options)
+                                .then(() => {})
+                                .catch((err) => {
+                                    console.log(err);
+                                });
+                        });
+                    }).catch(err => {
+                        console.log(err);
+                    });
+                }
+            });
+        }
+        fs.writeFileSync('./last.json', JSON.stringify(now));
+    });
 }
 module.exports = { send };
