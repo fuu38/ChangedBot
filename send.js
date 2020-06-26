@@ -50,7 +50,9 @@ function send(Twitter) {
                             LINE.pushMessage(groupid, options)
                                 .then(() => {})
                                 .catch((err) => {
-                                    console.log(err);
+                                    if (err.statusCode !== "400") {
+                                        console.log(err);
+                                    }
                                 });
                         });
                     }).catch(err => {
